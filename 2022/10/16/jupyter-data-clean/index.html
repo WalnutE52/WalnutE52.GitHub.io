@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Jupyter Notebook (2) - Data | WalnutE
+        
+    </title>
+
+    <link rel="canonical" href="https://github.com/WalnutE52/walnute52.github.io.git/2022/10/16/jupyter-data-clean/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('j.png')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/Eason-black.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Jupyter Notebook" title="Jupyter Notebook">Jupyter Notebook</a>
+                            
+                              <a class="tag" href="/tags/#blog" title="blog">blog</a>
+                            
+                        </div>
+                        <h1>Jupyter Notebook (2)</h1>
+                        <h2 class="subheading">Jubyter Notebook --- Pandas: Data clean</h2>
+                        <span class="meta">
+                            Posted by Yunshuo Zhang on
+                            2022-10-16
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WalnutE Data Science</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>Before reading this blog, we assume you have already install the Jupyter Notebook, pandas and Python<br>
+If you have problem about the installation of the Jupyter Notebook or pandas, please visit <a href="https://walnute52.github.io/2022/10/13/hexo-theme-beantech/" target="_blank" rel="noopener">Jupyter Notebook (1)</a></p>
+</blockquote>
+<hr>
+<h1><span id="data-access">Data Access</span></h1>
+<p>Before cleaning the data, we need to know some basic skills of access the data in pandas data frame.</p>
+<p>We use the <code>Participant_03.csv</code> dataset as example</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = pd.read_csv(<span class="string">"Participant-03.csv"</span>, sep=<span class="string">","</span>)</span><br><span class="line">p3</span><br></pre></td></tr></table></figure>
+<p><img src="data.png" alt="data"></p>
+<h2><span id="access-the-row">Access the row</span></h2>
+<h3><span id="access-the-specific-row">access the specific row</span></h3>
+<p>Using <code>iloc[]</code> to access the specific row</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.iloc[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[3]:</span></span><br><span class="line"><span class="string">Start</span>            <span class="number">31</span><span class="string">/12/2021</span> <span class="number">23</span><span class="string">:00</span></span><br><span class="line"><span class="string">Finish</span>            <span class="number">01</span><span class="string">/01/2022</span> <span class="number">0</span><span class="string">:00</span></span><br><span class="line"><span class="string">Steps</span> <span class="string">(count)</span>                 <span class="number">0.0</span></span><br><span class="line"><span class="attr">Name:</span> <span class="number">0</span><span class="string">,</span> <span class="attr">dtype:</span> <span class="string">object</span></span><br></pre></td></tr></table></figure>
+<h3><span id="iterate-over-rows">iterate over rows</span></h3>
+<p>Use the <code>iterrows</code> function to iterate.</p>
+<p>If we want to iterate each <code>Start</code> date and <code>Steps(count)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index, row <span class="keyword">in</span> p3.iterrows():</span><br><span class="line">    print(row[<span class="string">'Start'</span>],row[<span class="string">'Steps (count)'</span>])</span><br></pre></td></tr></table></figure>
+<p><img src="iterate.png" alt="iterate"></p>
+<h2><span id="access-the-column">Access the column</span></h2>
+<h3><span id="access-by-column-name">access by column name</span></h3>
+<p>If we want to access the <code>Start</code> column, we could directly use <code>[]</code> to access</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3[<span class="string">'Start'</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[14]:</span></span><br><span class="line"><span class="number">0</span>       <span class="number">31</span><span class="string">/12/2021</span> <span class="number">23</span><span class="string">:00</span></span><br><span class="line"><span class="number">1</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">0</span><span class="string">:00</span></span><br><span class="line"><span class="number">2</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">1</span><span class="string">:00</span></span><br><span class="line"><span class="number">3</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">2</span><span class="string">:00</span></span><br><span class="line"><span class="number">4</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">3</span><span class="string">:00</span></span><br><span class="line">              <span class="string">...</span>       </span><br><span class="line"><span class="number">6015</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">13</span><span class="string">:00</span></span><br><span class="line"><span class="number">6016</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">14</span><span class="string">:00</span></span><br><span class="line"><span class="number">6017</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">15</span><span class="string">:00</span></span><br><span class="line"><span class="number">6018</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">16</span><span class="string">:00</span></span><br><span class="line"><span class="number">6019</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">17</span><span class="string">:00</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">Start,</span> <span class="attr">Length:</span> <span class="number">6020</span><span class="string">,</span> <span class="attr">dtype:</span> <span class="string">object</span></span><br></pre></td></tr></table></figure>
+<h3><span id="access-by-column-index">access by column index</span></h3>
+<p>If we want to access the first column, we could still use the <code>iloc[]</code> function.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.iloc[:,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[16]:</span></span><br><span class="line"><span class="number">0</span>       <span class="number">31</span><span class="string">/12/2021</span> <span class="number">23</span><span class="string">:00</span></span><br><span class="line"><span class="number">1</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">0</span><span class="string">:00</span></span><br><span class="line"><span class="number">2</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">1</span><span class="string">:00</span></span><br><span class="line"><span class="number">3</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">2</span><span class="string">:00</span></span><br><span class="line"><span class="number">4</span>        <span class="number">01</span><span class="string">/01/2022</span> <span class="number">3</span><span class="string">:00</span></span><br><span class="line">              <span class="string">...</span>       </span><br><span class="line"><span class="number">6015</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">13</span><span class="string">:00</span></span><br><span class="line"><span class="number">6016</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">14</span><span class="string">:00</span></span><br><span class="line"><span class="number">6017</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">15</span><span class="string">:00</span></span><br><span class="line"><span class="number">6018</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">16</span><span class="string">:00</span></span><br><span class="line"><span class="number">6019</span>    <span class="number">08</span><span class="string">/09/2022</span> <span class="number">17</span><span class="string">:00</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">Start,</span> <span class="attr">Length:</span> <span class="number">6020</span><span class="string">,</span> <span class="attr">dtype:</span> <span class="string">object</span></span><br></pre></td></tr></table></figure>
+<h2><span id="access-the-specific-value">Access the specific value</span></h2>
+<p>if we want to access the first value which in the first row and first column</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.iloc[:,<span class="number">0</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Out[<span class="number">17</span>]:</span><br><span class="line">'31/12/<span class="number">2021</span> 23:00'</span><br></pre></td></tr></table></figure>
+<h1><span id="data-clean">Data Clean</span></h1>
+<p>Here, we use the <code>test.csv</code> dataset as example</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">"test.csv"</span>)</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+<p><img src="test.png" alt="test"></p>
+<h2><span id="clean-the-nan-value">Clean the NaN value</span></h2>
+<h3><span id="check-nan-value">Check NaN value</span></h3>
+<ol>
+<li>check the NaN value position</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data.isnull())</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">       <span class="string">SID</span>     <span class="string">M1</span>     <span class="string">M2</span>     <span class="string">M3</span>     <span class="string">M4</span>  <span class="string">Comment</span> <span class="string">on</span> <span class="string">student</span> <span class="string">based</span> <span class="string">on</span> <span class="string">exam</span> <span class="string">mark</span></span><br><span class="line"><span class="number">0</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">1</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">2</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">3</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">4</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>   <span class="literal">True</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">5</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">6</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">7</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">8</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br><span class="line"><span class="number">9</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>  <span class="literal">False</span>                                  <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>check the NaN summary</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data.isnull().sum())</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">SID</span>                                      <span class="number">0</span></span><br><span class="line"><span class="string">M1</span>                                       <span class="number">0</span></span><br><span class="line"><span class="string">M2</span>                                       <span class="number">0</span></span><br><span class="line"><span class="string">M3</span>                                       <span class="number">1</span></span><br><span class="line"><span class="string">M4</span>                                       <span class="number">0</span></span><br><span class="line"><span class="string">Comment</span> <span class="string">on</span> <span class="string">student</span> <span class="string">based</span> <span class="string">on</span> <span class="string">exam</span> <span class="string">mark</span>    <span class="number">0</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>check for any NaN value</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.isnull().values.any()</span><br></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Out</span>[<span class="number">6</span>]:</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>check the NaN value for a single row</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'M3'</span>].isnull()</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[7]:</span></span><br><span class="line"><span class="number">0</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">3</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">4</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">5</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">6</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">7</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">8</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">9</span>    <span class="literal">False</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">M3,</span> <span class="attr">dtype:</span> <span class="string">bool</span></span><br></pre></td></tr></table></figure>
+<h3><span id="replace-nan-with-0">Replace NaN with 0</span></h3>
+<p>Use <code>fillna()</code> function to replace the NaN value with 0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'M3'</span>].fillna(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[10]:</span></span><br><span class="line"><span class="number">0</span>    <span class="number">50.0</span></span><br><span class="line"><span class="number">1</span>    <span class="number">50.0</span></span><br><span class="line"><span class="number">2</span>    <span class="number">50.0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">52.0</span></span><br><span class="line"><span class="number">4</span>     <span class="number">0.0</span></span><br><span class="line"><span class="number">5</span>    <span class="number">53.0</span></span><br><span class="line"><span class="number">6</span>    <span class="number">98.0</span></span><br><span class="line"><span class="number">7</span>    <span class="number">90.0</span></span><br><span class="line"><span class="number">8</span>    <span class="number">90.0</span></span><br><span class="line"><span class="number">9</span>    <span class="number">90.0</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">M3,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<h3><span id="replace-nan-with-the-average-column">Replace NaN with the average column</span></h3>
+<p>Based on the context, Only M3 has null value and it represent the mark of M3. According to the M3 of other students, it has little probability to get 0 mark and there is no replacement mark for that student. This may be caused by the omission in inputting the results. Hence, change it to the average score of other marks in M3 which is more reasonable for later analysis and statistics.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">"M3"</span>] = data[<span class="string">"M3"</span>].fillna(data[<span class="string">"M3"</span>].mean(skipna=<span class="literal">True</span>)).astype(int)</span><br><span class="line">data[<span class="string">'M3'</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[14]:</span></span><br><span class="line"><span class="number">0</span>    <span class="number">50</span></span><br><span class="line"><span class="number">1</span>    <span class="number">50</span></span><br><span class="line"><span class="number">2</span>    <span class="number">50</span></span><br><span class="line"><span class="number">3</span>    <span class="number">52</span></span><br><span class="line"><span class="number">4</span>    <span class="number">69</span></span><br><span class="line"><span class="number">5</span>    <span class="number">53</span></span><br><span class="line"><span class="number">6</span>    <span class="number">98</span></span><br><span class="line"><span class="number">7</span>    <span class="number">90</span></span><br><span class="line"><span class="number">8</span>    <span class="number">90</span></span><br><span class="line"><span class="number">9</span>    <span class="number">90</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">M3,</span> <span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<p><code>skipna = True</code>: this is used to calculate the mean value without count the NaN value</p>
+<p><code>astype(int)</code>: change the data type to int due to it represents the grade of the student</p>
+<p>Afrer clean the NaN, the NaN value is replaced with 69</p>
+<h2><span id="clean-the-incorrect-value">Clean the incorrect value</span></h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'M2'</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Out[15]:</span></span><br><span class="line"><span class="number">0</span>    <span class="number">110</span></span><br><span class="line"><span class="number">1</span>     <span class="number">98</span></span><br><span class="line"><span class="number">2</span>    <span class="number">100</span></span><br><span class="line"><span class="number">3</span>     <span class="number">90</span></span><br><span class="line"><span class="number">4</span>     <span class="number">89</span></span><br><span class="line"><span class="number">5</span>     <span class="number">90</span></span><br><span class="line"><span class="number">6</span>     <span class="number">23</span></span><br><span class="line"><span class="number">7</span>     <span class="number">88</span></span><br><span class="line"><span class="number">8</span>     <span class="number">93</span></span><br><span class="line"><span class="number">9</span>     <span class="number">97</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">M2,</span> <span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<p>According to the Mark descriptions, the upper bound of each mark is 100. However, the M2 of student 19001 is 110 which is over 100.</p>
+<h3><span id="replace-with-reasonable-value">Replace with reasonable value</span></h3>
+<p>Change the 110 to 100</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'M2'</span>] = data[<span class="string">'M2'</span>].replace([<span class="number">110</span>], <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<h3><span id="drop-the-incorrect-value">Drop the incorrect value</span></h3>
+<p>Drop the 110 value</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = data.drop(data[data.M2 == <span class="number">110</span>].index)</span><br></pre></td></tr></table></figure>
+<h2><span id="remove-outliers">Remove outliers</span></h2>
+<h3><span id="detect-outliers">Detect outliers</span></h3>
+<ol>
+<li>Boxplot</li>
+</ol>
+<p>Drawing boxplot to detect outliers</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">boxplot = data.boxplot(column=[<span class="string">'M1'</span>, <span class="string">'M2'</span>, <span class="string">'M3'</span>,<span class="string">'M4'</span>]) </span><br><span class="line">boxplot</span><br></pre></td></tr></table></figure>
+<p><img src="boxplot.png" alt="boxplot"></p>
+<p>According to the boxplot, there is a outlier in M2 which is a point very far away from the quntile 1 and it is 23.</p>
+<ol start="2">
+<li>Calculate the quantile</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findOutliers</span><span class="params">(series)</span>:</span></span><br><span class="line">    minimum = series.min()</span><br><span class="line">    Q1 = series.quantile(<span class="number">0.25</span>)</span><br><span class="line">    mid = series.mean()</span><br><span class="line">    Q3 = series.quantile(<span class="number">0.75</span>)</span><br><span class="line">    maximum = series.max()</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Min:'</span>,minimum,<span class="string">'Q1:'</span>,Q1,<span class="string">'Average:'</span>,mid,<span class="string">'Q3:'</span>,Q3,<span class="string">'Max:'</span>,maximum</span><br><span class="line">findOutliers(data[<span class="string">'M2'</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">Out</span><span class="selector-attr">[16]</span>:</span><br><span class="line"><span class="selector-tag">M2</span>: (<span class="string">'Min:'</span>, <span class="number">23</span>, <span class="string">'Q1:'</span>, <span class="number">89.25</span>, <span class="string">'Average:'</span>, <span class="number">86.8</span>, <span class="string">'Q3:'</span>, <span class="number">97.75</span>, <span class="string">'Max:'</span>, <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>According to the result, the minimum 23 is smaller than the quantile 1 89.25 and low down the average. Hence, 23 si an outlier.</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2022/10/14/HTML-BASIC/" data-toggle="tooltip" data-placement="top" title="HTML Note">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Data Access</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Access the row</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">access the specific row</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">iterate over rows</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Access the column</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">access by column name</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">access by column index</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Access the specific value</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Data Clean</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Clean the NaN value</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">Check NaN value</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text">Replace NaN with 0</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.1.3.</span> <span class="toc-nav-text">Replace NaN with the average column</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Clean the incorrect value</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">Replace with reasonable value</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Drop the incorrect value</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Remove outliers</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">Detect outliers</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Jupyter Notebook" title="Jupyter Notebook">Jupyter Notebook</a>
+                        
+                          <a class="tag" href="/tags/#blog" title="blog">blog</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "https://github.com/WalnutE52/walnute52.github.io.git/2022/10/16/jupyter-data-clean/";
+    var disqus_url = "https://github.com/WalnutE52/walnute52.github.io.git/2022/10/16/jupyter-data-clean/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/yunshuo.zhang.1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/WalnutE52">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/yunshuo-zhang-a407b0245">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Yunshuo Zhang 2022 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://github.com/WalnutE52/walnute52.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://github.com/WalnutE52/walnute52.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

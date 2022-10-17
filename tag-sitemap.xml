@@ -2,15 +2,43 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
+        <loc>https://github.com/WalnutE52/walnute52.github.io.git/tags/HTML/</loc>
+        <lastmod>2022-10-15T13:45:29.132Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://github.com/WalnutE52/walnute52.github.io.git/tags/Note/</loc>
+        <lastmod>2022-10-15T13:45:29.132Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://github.com/WalnutE52/walnute52.github.io.git/tags/Jupyter-NoteBook/</loc>
-        <lastmod>2022-10-14T13:00:32.402Z</lastmod>
+        <lastmod>2022-10-15T14:03:33.518Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://github.com/WalnutE52/walnute52.github.io.git/tags/Blog/</loc>
-        <lastmod>2022-10-14T13:00:32.402Z</lastmod>
+        <lastmod>2022-10-15T14:03:33.518Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://github.com/WalnutE52/walnute52.github.io.git/tags/Jupyter-Notebook/</loc>
+        <lastmod>2022-10-17T04:23:30.648Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://github.com/WalnutE52/walnute52.github.io.git/tags/blog/</loc>
+        <lastmod>2022-10-17T04:23:30.648Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
